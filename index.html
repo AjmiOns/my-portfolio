@@ -276,6 +276,8 @@ const CONFIG = {
   name: "Ons Ajmi",
   role: "Cloud infrastructure engineering student",
   github: "AjmiOns",
+  cv: "cv.pdf",                  // the CV file, placed next to index.html
+  cvName: "Ons_AJMI_CV.pdf",     // the name visitors get when they download it
   email: "ajmions241@gmail.com",
   linkedin: "https://www.linkedin.com/in/ons-ajmi--/",
   hero: {                        // Animated portrait (see tools/make-hero-sprite.sh)
@@ -292,8 +294,10 @@ const CONFIG = {
   ],
   now: "exploring containers, AWS automation and infrastructure as code.",
   education: [
-    { title: "Cloud infrastructure engineering", place: "TEK-UP University", when: "In progress",
-      text: "Hands-on, documented labs on OpenStack, AWS, Linux and networking, with reports and screenshots as evidence." }
+    { title: "Cloud infrastructure engineering", place: "TEK-UP University", when: "2025 – 2028 (expected)",
+      text: "Hands-on, documented labs on AWS, OpenStack, Linux, containers and networking, with reports and screenshots as evidence." },
+    { title: "Bachelor’s Degree (Licence) in Information Systems Development", place: "ISET du Kef", when: "Graduated 2025",
+      text: "Graduated with honors. Final-year project graded Very Good." }
   ],
   certs: [],                     // Add real certifications here, for example { name: "…", issuer: "…", year: "2026" }
   cta: "Have an idea, a question, or just want to talk code? My inbox is open.",
@@ -303,9 +307,11 @@ const CONFIG = {
     { title: "Cloud and DevOps", items: ["AWS", "Boto3", "Docker", "Podman", "OpenStack", "Linux"] },
     { title: "Networking and data", items: ["BGP", "OSPF", "ACLs", "Packet Tracer", "PostgreSQL", "MySQL"] }
   ],
-  journey: [                     // Newest first. Add internships, jobs and earlier studies here.
-    { title: "Cloud infrastructure engineering student", place: "TEK-UP University", when: "In progress",
-      text: "Building full-stack projects and documenting hands-on labs in cloud, containers and networking." }
+  journey: [                     // Newest first
+    { title: "Cloud infrastructure engineering student", place: "TEK-UP University", when: "2025 – 2028 (expected)",
+      text: "Specialising in cloud infrastructure, with hands-on, documented labs on AWS, OpenStack, Linux, containers and networking." },
+    { title: "Bachelor’s Degree (Licence) in Information Systems Development", place: "ISET du Kef", when: "Graduated 2025",
+      text: "Graduated with honors. Final-year project graded Very Good." }
   ],
   labsIntro: "Documented hands-on labs in networking, AWS automation, containers and cloud infrastructure.",
   labs: [
@@ -328,9 +334,9 @@ const CONFIG = {
       idea: "An AI movie assistant that recommends films through a conversation.",
       did: "Combined FAISS and BM25 search (hybrid RAG) with Groq Llama 3.1 and TMDB data, added personalised ranking, and built it with Laravel and FastAPI, packaged with Docker.",
       outcome: "", repo: "https://github.com/AjmiOns/CineBot-AI", demo: "" },
-    { title: "Art Gallery on AWS", image: "images/project4.jpg", tags: ["Next.js", "NestJS", "PostgreSQL", "AWS"],
+    { title: "Art Gallery on AWS", image: "images/project4.jpg", tags: ["Next.js", "NestJS", "PostgreSQL", "AWS", "Terraform"],
       idea: "A marketplace where artists publish their artworks and buyers discover and buy them.",
-      did: "Built the Next.js frontend and NestJS API with PostgreSQL, user accounts, artwork publishing and a Stripe test-mode checkout, and designed it for a highly available three-tier AWS deployment (Terraform modules planned).",
+      did: "Built the Next.js frontend and NestJS API with PostgreSQL, user accounts, artwork publishing and a Stripe test-mode checkout, and co-developed the Terraform infrastructure: a multi-AZ three-tier AWS network with tiered security groups.",
       outcome: "", repo: "https://github.com/AjmiOns/art-gallery-aws", demo: "" },
     { title: "Folio Library", image: "images/project3.jpg", tags: ["NestJS", "PostgreSQL", "TypeORM", "Bootstrap", "Chart.js"],
       idea: "A library management platform with an admin dashboard.",
@@ -353,6 +359,7 @@ $("brand").textContent = C.name; $("fname").textContent = C.name; $("frole").tex
 $("headline").textContent = C.headline; $("tagline").textContent = C.tagline;
 $("about1").textContent = C.about[0]; $("about2").textContent = C.about[1]; $("now").textContent = C.now; $("cta").textContent = C.cta;
 $("mail").href = "mailto:" + C.email; $("li").href = C.linkedin; $("gh1").href = "https://github.com/" + C.github;
+$("cv").href = C.cv; $("cv").setAttribute("download", C.cvName);
 $("face").textContent = initials;
 $("skills").innerHTML = C.skills.map((s, i) => `<div class="fx rounded-4 p-3 p${[3,2,4,5][i % 4]}"><h4 class="h6 mb-2">${esc(s.title)}</h4>${s.items.map(t => `<span class="chip">${esc(t)}</span>`).join("")}</div>`).join("");
 $("timeline").innerHTML = C.journey.map(e => `<li><h3 class="h5 mb-1">${esc(e.title)}, ${esc(e.place)}</h3><div class="small text-secondary mb-1">${esc(e.when)}</div><p class="text-secondary mb-0" style="max-width:62ch">${esc(e.text)}</p></li>`).join("");
@@ -430,7 +437,7 @@ $("copy").addEventListener("click", async () => {
     labs:       { d: "Earlier hands-on labs", run: () => C.labs.map(l => `${key(l.title)} <span class="dim">[${esc(l.tags.join(", "))}]</span>\n  ${esc(l.text)}\n  ${l.url ? link(l.url, "view lab") : ""}`).join("\n\n") },
     certs:      { d: "Certifications", run: () => !C.certs.length ? "No certifications listed yet." : C.certs.map(c => `${key(c.name)}, ${esc(c.issuer)} <span class="dim">(${esc(c.year)})</span>`).join("\n") },
     contact:    { d: "How to reach me", run: () => `${key("email")}     ${link("mailto:" + C.email, C.email)}\n${key("linkedin")}  ${link(C.linkedin)}\n${key("github")}    ${link("https://github.com/" + C.github)}` },
-    resume:     { d: "Download my CV", run: () => { const a = document.createElement("a"); a.href = "cv.pdf"; a.download = ""; document.body.appendChild(a); a.click(); a.remove(); return "Downloading cv.pdf..."; } },
+    resume:     { d: "Download my CV", run: () => { const a = document.createElement("a"); a.href = C.cv; a.download = C.cvName; document.body.appendChild(a); a.click(); a.remove(); return "Downloading cv.pdf..."; } },
     github:     { d: "Open my GitHub profile", run: () => { window.open("https://github.com/" + C.github, "_blank", "noopener"); return "Opening GitHub..."; } },
     linkedin:   { d: "Open my LinkedIn profile", run: () => { window.open(C.linkedin, "_blank", "noopener"); return "Opening LinkedIn..."; } },
     theme:      { d: "Switch light or dark theme", run: () => { $("theme").click(); return "Theme switched."; } },
