@@ -254,6 +254,15 @@ h2 em,.mega .em{font-family:"Instrument Serif",Georgia,serif;font-style:italic;f
 /* footer */
 .foot{border-top:1px solid var(--bs-border-color)}.foot-links{display:flex;gap:2rem}
 .foot-links a{color:var(--bs-secondary-color);text-decoration:none;font-size:.95rem}.foot-links a:hover{color:rgb(var(--bs-link-color-rgb))}
+/* full-figure portrait: the cutout stands in front of the ring */
+.portrait{width:min(380px,82%);aspect-ratio:4/5}
+.portrait .ring{inset:auto;left:5%;top:11%;width:90%;height:auto;aspect-ratio:1}
+.portrait .r2{inset:auto;right:-5%;bottom:9%;width:34%;height:auto;aspect-ratio:1}
+.portrait .r3{inset:auto;left:-4%;top:3%;width:22%;height:auto;aspect-ratio:1}
+.face{inset:0!important;border-radius:0!important;overflow:visible!important;background:none!important;box-shadow:none!important;display:block!important}
+[data-bs-theme=dark] .face{background:none!important}
+.face img{object-fit:contain;object-position:50% 100%;-webkit-mask-image:linear-gradient(to bottom,#000 80%,transparent);mask-image:linear-gradient(to bottom,#000 80%,transparent)}
+@media(max-width:767px){.portrait{width:240px}}
 :focus-visible{outline:3px solid rgb(var(--bs-link-color-rgb))!important;outline-offset:3px}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 @media(max-width:767px){section{padding:56px 0}.portrait{width:200px;order:-1}}
@@ -741,7 +750,7 @@ const HERO_STILL = "data:image/webp;base64,UklGRhD9AABXRUJQVlA4WAoAAAAQAAAAfwIAH
     im.alt = "Portrait of " + C.name; im.decoding = "async";
     im.onload = () => {
       face.textContent = ""; face.appendChild(im);
-      render = () => { im.style.transform = `perspective(700px) rotateY(${(sx * 9).toFixed(2)}deg) rotateX(${(-sy * 6).toFixed(2)}deg) translateY(4%)`; };
+      render = () => { im.style.transform = `perspective(700px) rotateY(${(sx * 9).toFixed(2)}deg) rotateX(${(-sy * 6).toFixed(2)}deg) scale(1)`; };
       render();
     };
     im.src = HERO_STILL;
