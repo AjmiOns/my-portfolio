@@ -263,6 +263,34 @@ h2 em,.mega .em{font-family:"Instrument Serif",Georgia,serif;font-style:italic;f
 [data-bs-theme=dark] .face{background:none!important}
 .face img{object-fit:contain;object-position:50% 100%;-webkit-mask-image:linear-gradient(to bottom,#000 80%,transparent);mask-image:linear-gradient(to bottom,#000 80%,transparent)}
 @media(max-width:767px){.portrait{width:150px}}
+/* GitHub band, language switch, floating buttons, AI panel */
+.gh-card{display:flex;align-items:center;gap:1.6rem;flex-wrap:wrap;background:var(--surface);border:1px solid var(--bs-border-color);border-radius:22px;padding:2.2rem 2.4rem;box-shadow:0 12px 32px rgba(30,60,90,.08)}
+.gh-ico{width:58px;height:58px;border-radius:14px;background:var(--p0);color:rgb(var(--bs-link-color-rgb));display:grid;place-items:center;flex:none}
+.gh-txt{flex:1;min-width:260px;max-width:640px}.gh-txt h2{font-size:clamp(1.7rem,3.4vw,2.6rem);margin-bottom:.6rem}
+.gh-btn{font:600 .92rem "JetBrains Mono",ui-monospace,monospace;border-radius:12px;padding:.8rem 1.2rem}
+.lang{display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 12px;border-radius:12px;border:1px solid var(--bs-border-color);background:var(--surface);color:var(--bs-secondary-color);font:600 .8rem "JetBrains Mono",ui-monospace,monospace}
+.lang svg{color:rgb(var(--bs-link-color-rgb))}.lang .on{color:rgb(var(--bs-link-color-rgb));font-weight:700}
+.fab-wrap{position:fixed;right:18px;bottom:18px;z-index:1030;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.fab-top{width:52px;height:52px;border-radius:50%;border:0;background:linear-gradient(135deg,#7FB0DC,#2F6FA3);color:#fff;font-size:1.3rem;box-shadow:0 10px 24px rgba(47,111,163,.35);opacity:0;pointer-events:none;transform:translateY(8px);transition:opacity .3s,transform .3s}
+.fab-top.show{opacity:1;pointer-events:auto;transform:none}
+.fab-ai{display:flex;align-items:center;gap:12px;padding:8px 18px 8px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.7);background:rgba(255,255,255,.86);backdrop-filter:blur(12px);box-shadow:0 14px 34px rgba(30,60,90,.2);font:600 .95rem "DM Sans","Segoe UI",sans-serif;color:var(--bs-body-color)}
+[data-bs-theme=dark] .fab-ai{background:rgba(21,39,58,.88);border-color:var(--bs-border-color)}
+.ai-ico{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#5B8FC7,#2B9A8F);display:grid;place-items:center;color:#fff}
+.fab-ai .dot{width:10px;height:10px;border-radius:50%;background:#2B9A8F;box-shadow:0 0 0 4px rgba(43,154,143,.2);animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 7px rgba(43,154,143,0)}}
+.ai-panel{padding:0;position:fixed;right:18px;bottom:142px;width:min(380px,calc(100vw - 36px));height:min(520px,calc(100vh - 180px));display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--bs-border-color);border-radius:22px;box-shadow:0 24px 60px rgba(30,60,90,.28);z-index:1031;overflow:hidden}
+.ai-panel[hidden]{display:none}
+.ai-head{padding:14px 16px;background:linear-gradient(120deg,var(--p0),var(--p2));display:flex;justify-content:space-between;align-items:center;font-weight:700}
+.ai-sub{font-weight:400;font-size:.76rem;color:var(--bs-secondary-color)}.ai-x{border:0;background:none;color:var(--bs-body-color);font-size:1rem}
+.ai-msgs{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px;font-size:.92rem}
+.m{max-width:88%;padding:9px 13px;border-radius:16px;line-height:1.45;word-break:break-word}
+.m.bot{background:var(--p0);align-self:flex-start;border-bottom-left-radius:5px}
+.m.me{background:rgb(var(--bs-link-color-rgb));color:#fff;align-self:flex-end;border-bottom-right-radius:5px}
+.m a{color:inherit;text-decoration:underline}
+.ai-sug{display:flex;gap:6px;flex-wrap:wrap;padding:0 14px 8px}.ai-sug button{border:1px solid var(--bs-border-color);background:var(--surface);color:var(--bs-body-color);border-radius:999px;padding:4px 12px;font-size:.8rem}
+.ai-form{display:flex;gap:8px;padding:10px;border-top:1px solid var(--bs-border-color)}
+.ai-form input{flex:1;min-width:0;border:1px solid var(--bs-border-color);border-radius:999px;padding:8px 14px;background:var(--surface);color:var(--bs-body-color);outline:0}
+.ai-form button{border:0;border-radius:999px;padding:0 16px;background:rgb(var(--bs-link-color-rgb));color:#fff;font-weight:600}
 :focus-visible{outline:3px solid rgb(var(--bs-link-color-rgb))!important;outline-offset:3px}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 @media(max-width:767px){section{padding:56px 0}.portrait{width:200px;order:-1}}
@@ -282,7 +310,8 @@ h2 em,.mega .em{font-family:"Instrument Serif",Georgia,serif;font-style:italic;f
         <li class="nav-item"><a class="nav-link" href="#labs">Labs</a></li>
         <li class="nav-item"><a class="nav-link" href="#journey">Journey</a></li>
         <li class="nav-item"><a class="nav-link" href="#contact">Say hi</a></li>
-        <li class="nav-item ms-lg-2"><button class="btn theme rounded-circle" id="theme" aria-label="Switch light or dark theme">◐</button></li>
+        <li class="nav-item ms-lg-2"><button class="lang" id="lang" type="button" aria-label="Language / Langue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18"/></svg><span class="l-fr">FR</span> / <span class="l-en">EN</span></button></li>
+        <li class="nav-item ms-lg-1"><button class="btn theme rounded-circle" id="theme" aria-label="Switch light or dark theme">◐</button></li>
         <li class="nav-item"><button class="btn theme rounded-circle d-none" id="cursorBtn" type="button" aria-pressed="true" aria-label="Custom cursor" title="Custom cursor"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5 3l14 8-6 2 4 7-3 1.5-4-7-5 4z"/><line class="off" x1="3" y1="3" x2="21" y2="21" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></button></li>
       </ul>
     </div>
@@ -369,6 +398,16 @@ h2 em,.mega .em{font-family:"Instrument Serif",Georgia,serif;font-style:italic;f
     </div>
   </section>
 
+  <section id="more">
+    <div class="container">
+      <div class="gh-card">
+        <div class="gh-ico" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></div>
+        <div class="gh-txt"><div class="kicker">Proof of work</div><h2>Don’t take my word for it.<br><em>Read the code.</em></h2><p class="text-secondary mb-0">Every project and lab on this page lives on GitHub, with its commits and documentation. Review the work the way an engineer would.</p></div>
+        <a class="btn btn-soft gh-btn" id="ghMore" href="#" target="_blank" rel="noopener">Browse my repositories <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+
   <section id="journey">
     <div class="container">
       <div class="kicker">Journey</div><h2 class="mb-4">The path <em>so far.</em></h2>
@@ -408,6 +447,16 @@ h2 em,.mega .em{font-family:"Instrument Serif",Georgia,serif;font-style:italic;f
   </div>
 </footer>
 
+<div class="fab-wrap">
+  <button class="fab-top" id="toTop" type="button" aria-label="Back to top">↑</button>
+  <button class="fab-ai" id="aiBtn" type="button" aria-expanded="false" aria-controls="aiPanel"><span class="ai-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V5M9.5 13h.01M14.5 13h.01M2 13v2M22 13v2"/></svg></span><span id="aiLabel">Ask Ons AI</span><i class="dot" aria-hidden="true"></i></button>
+</div>
+<section class="ai-panel" id="aiPanel" aria-label="Ons AI" hidden>
+  <div class="ai-head"><div><div id="aiTitle">Ons AI</div><div class="ai-sub" id="aiSub"></div></div><button type="button" id="aiClose" class="ai-x" aria-label="Close">✕</button></div>
+  <div class="ai-msgs" id="aiMsgs" role="log" aria-live="polite"></div>
+  <div class="ai-sug" id="aiSug"></div>
+  <form class="ai-form" id="aiForm"><input id="aiIn" type="text" autocomplete="off" maxlength="300" aria-label="Your question"><button type="submit" id="aiSend">Send</button></form>
+</section>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 /* ================= EDIT ONLY THIS BLOCK ================= */
@@ -499,6 +548,67 @@ const CONFIG = {
 };
 /* ======================================================== */
 
+const LANG = (() => { try { return localStorage.getItem("lang") === "fr" ? "fr" : "en"; } catch (e) { return "en"; } })();
+const FR = {
+  role: "Étudiante ingénieure en infrastructure cloud",
+  headline: "Salut, moi c’est Ons. J’aime faire fonctionner les choses.",
+  tagline: "Je suis étudiante ingénieure en infrastructure cloud. Je conçois et déploie des architectures hautement disponibles sur AWS et je documente des labs pratiques en conteneurs et en réseau.",
+  about: ["Je suis étudiante ingénieure en infrastructure cloud à TEK-UP University. J’aime transformer des idées en systèmes qui fonctionnent, de l’API et de la base de données jusqu’au cloud qui les héberge.", "Mes projets vont d’un assistant de films IA à une plateforme de bibliothèque et une application Android, et mes labs couvrent le réseau, l’automatisation AWS et les conteneurs."],
+  now: "j’explore les conteneurs, l’automatisation AWS et l’infrastructure as code.",
+  cta: "Une idée, une question ou envie de parler code ? Ma boîte mail est ouverte.",
+  focus: ["Infrastructure cloud", "Architecture cloud", "Répartition de charge", "Haute disponibilité", "AWS et Terraform"],
+  card: { label: "Carte ingénieure", sticker: "Construisons", facts: [["Basée à", "Tunis, Tunisie"], ["Études", "TEK-UP University"], ["Axe", "Architecture cloud"]],
+    caption: "L’infrastructure derrière les idées", heading: "Un cloud qui reste en ligne.",
+    points: ["Étudiante en infrastructure cloud", "Licence, obtenue avec mention", "AWS multi-AZ et répartition de charge", "Terraform, Docker, Podman, Linux", "2 stages, {projects} projets, {labs} labs"] },
+  skills: [{ title: "Infrastructure cloud" }, { title: "Architecture cloud", items: ["Répartition de charge", "Auto Scaling", "Haute disponibilité", "Multi-AZ", "VPC 3 niveaux", "RDS Multi-AZ"] }, { title: "Langages et frameworks" }, { title: "Réseau et données" }],
+  journey: [
+    { title: "Étudiante ingénieure en infrastructure cloud", place: "TEK-UP University", when: "2025 – 2028 (prévu)", text: "Spécialisation en infrastructure et architecture cloud, avec des labs pratiques documentés sur des déploiements AWS hautement disponibles, OpenStack, Linux, conteneurs et réseau." },
+    { title: "Licence en développement des systèmes d’information", place: "ISET du Kef", when: "Diplômée en 2025", text: "Diplômée avec mention. Projet de fin d’études noté Très bien." }],
+  education: [
+    { title: "Ingénierie en infrastructure cloud", place: "TEK-UP University", when: "2025 – 2028 (prévu)", text: "Labs pratiques documentés sur des architectures AWS hautement disponibles (répartition de charge, Auto Scaling, bases de données Multi-AZ), OpenStack, Linux, conteneurs et réseau, avec rapports et captures d’écran comme preuves." },
+    { title: "Licence en développement des systèmes d’information", place: "ISET du Kef", when: "Diplômée en 2025", text: "Diplômée avec mention. Projet de fin d’études noté Très bien." }],
+  labsIntro: "Labs pratiques documentés sur l’architecture AWS hautement disponible, le réseau, l’automatisation, les conteneurs et l’infrastructure cloud.",
+  labs: [
+    { category: "Haute disponibilité sur AWS", level: "Architecture", title: "Architecture de messagerie hautement disponible", text: "Architecture AWS multi-AZ avec Application Load Balancer, groupe Auto Scaling, RDS MySQL Multi-AZ, ElastiCache Redis, EFS et DynamoDB, vérifiée par des health checks et des tests navigateur." },
+    { category: "Routage et contrôle d’accès", level: "Réseau", title: "Labs réseau Packet Tracer", text: "Labs Cisco Packet Tracer sur eBGP, OSPFv2 et ACL, avec configurations et rapports écrits." },
+    { category: "AWS avec Python", level: "Automatisation", title: "Automatisation AWS avec Boto3", text: "Automatisation AWS avec Python et Boto3 : un CLI de gestion S3, un explorateur de ressources, des paginators et la gestion d’erreurs." },
+    { category: "Conteneurisation Linux", level: "Conteneurs", title: "Conteneurs Linux avec Podman", text: "Un guide complet de conteneurisation : namespaces, cgroups, OCI, runc/containerd et Podman, avec cours, TP pratiques et une simulation d’examen Red Hat EX188." },
+    { category: "Infrastructure cloud", level: "Cloud", title: "Labs d’infrastructure cloud", text: "Labs cloud documentés sur OpenStack et AWS (EC2, EBS, VPC), plus Linux et réseau, avec rapports, captures d’écran comme preuves et tests de connaissances." }],
+  projects: [
+    { idea: "Un assistant de films IA qui recommande des films au fil d’une conversation.", did: "Recherche hybride FAISS et BM25 avec Groq Llama 3.1 et les données TMDB, classement personnalisé, interface de chat Laravel et FastAPI, packagée avec Docker.", features: ["Recherche hybride : FAISS (vectorielle) et BM25", "Réponses de Groq Llama 3.1 avec les données TMDB", "Classement personnalisé dans une interface de chat", "Packagé avec Docker"], contribution: "Projet solo : je l’ai construit de bout en bout." },
+    { idea: "Une marketplace où les artistes publient leurs œuvres et où les acheteurs les découvrent et les achètent, conçue pour une architecture AWS hautement disponible.", did: "J’ai développé l’application Next.js et NestJS (comptes, publication d’œuvres, paiement Stripe en mode test) et travaillé sur son architecture AWS avec Terraform : un VPC à trois niveaux sur deux zones de disponibilité. J’ai documenté l’architecture cible avec load balancer, Auto Scaling et RDS Multi-AZ.", features: ["Comptes, publication et navigation des œuvres", "Paiement Stripe en mode test", "Modules Terraform réseau, sécurité et calcul sur AWS", "Architecture cible documentée : load balancer, Auto Scaling, RDS Multi-AZ"], contribution: "Équipe de 2. J’ai construit l’application full-stack, collaboré sur l’infrastructure Terraform et documenté l’architecture cible." },
+    { idea: "Une plateforme de gestion de bibliothèque avec tableau de bord administrateur.", did: "API REST NestJS avec JWT, accès par rôles, TypeORM et PostgreSQL, plus une interface Bootstrap et Chart.js : catalogue par catégorie, favoris, corbeille et restauration.", features: ["Catalogue par catégorie, favoris, corbeille et restauration", "Authentification JWT et accès par rôles", "Tableau de bord administrateur avec Chart.js"], contribution: "Projet solo : API, base de données et interface." },
+    { idea: "Un gestionnaire de tâches Android s’appuyant sur ma propre API REST.", did: "Application Java avec Retrofit et une API PHP/MySQL : inscription, connexion, ajout, modification et validation des tâches.", features: ["Inscription et connexion", "Ajout, modification et validation des tâches", "API REST PHP et MySQL consommée avec Retrofit"], contribution: "Projet solo : application Android et API REST." }]
+};
+const FRMAP = {
+  "About": "À propos", "Work": "Projets", "Journey": "Parcours", "Say hi": "Contact",
+  "See what I’ve built": "Voir mes projets", "Download CV": "Télécharger le CV", "Focused on": "Axes :",
+  "Building things from": "Construire à partir de", "scratch.": "zéro.", "Right now:": "En ce moment :",
+  "Toolbox": "Boîte à outils", "Tools I": "Les outils que", "reach for.": "j’utilise.",
+  "Interactive": "Interactif", "Ask me": "Demandez-moi", "anything.": "tout.",
+  "A small interactive shell. Click a command below or type": "Un petit terminal interactif. Cliquez sur une commande ci-dessous ou tapez",
+  "Selected work": "Projets sélectionnés", "Things I’ve built,": "Ce que j’ai construit,", "end to end.": "de bout en bout.",
+  "A few projects I’m proud of, and what each one taught me.": "Quelques projets dont je suis fière, et ce que chacun m’a appris.",
+  "Hands-on": "Pratique", "Earlier labs,": "Labs réalisés,", "documented.": "documentés.",
+  "Proof of work": "Preuve par le code", "Don’t take my word for it.": "Ne me croyez pas sur parole.", "Read the code.": "Lisez le code.",
+  "Every project and lab on this page lives on GitHub, with its commits and documentation. Review the work the way an engineer would.": "Chaque projet et chaque lab présenté ici est sur GitHub, avec ses commits et sa documentation. Jugez le travail comme le ferait un ingénieur.",
+  "Browse my repositories": "Parcourir mes dépôts", "The path": "Le chemin", "so far.": "parcouru.",
+  "Details": "Détails", "Key features": "Fonctionnalités clés", "My contribution": "Ma contribution", "Source code": "Code source", "Live demo": "Démo en ligne", "View lab": "Voir le lab",
+  "The idea": "L’idée", "What I did": "Ce que j’ai fait", "How it went": "Résultat",
+  "Let’s connect": "Restons en contact", "Send an email": "Envoyer un e-mail", "Copy email": "Copier l’e-mail", "Copied": "Copié",
+  "No need to": "Pas besoin de", "overthink it.": "trop réfléchir.",
+  "Download portfolio ↓": "Télécharger le portfolio ↓", "Back to top ↑": "Retour en haut ↑",
+  "Built with HTML, CSS and JavaScript · Hosted on Vercel · ©": "Conçu avec HTML, CSS et JavaScript · Hébergé sur Vercel · ©",
+  "Welcome to my interactive portfolio!": "Bienvenue sur mon portfolio interactif !",
+  "List available commands": "Lister les commandes disponibles", "General information": "Informations générales", "Experience and journey": "Expérience et parcours",
+  "Educational background": "Parcours scolaire", "Technical skills": "Compétences techniques", "Featured projects": "Projets phares", "Earlier hands-on labs": "Labs pratiques",
+  "How to reach me": "Me contacter", "Download my CV": "Télécharger mon CV", "Open my GitHub profile": "Ouvrir mon profil GitHub", "Open my LinkedIn profile": "Ouvrir mon profil LinkedIn",
+  "Switch light or dark theme": "Changer de thème clair ou sombre", "Clear the screen": "Effacer l’écran"
+};
+const T = s => (LANG === "fr" && FRMAP[s]) || s;
+const mg = (a, b) => { for (const k in b) { const v = b[k]; if (Array.isArray(v)) { if (v.length && v[0] && typeof v[0] === "object" && !Array.isArray(v[0])) v.forEach((o, i) => mg(a[k][i], o)); else a[k] = v; } else if (v && typeof v === "object") mg(a[k], v); else a[k] = v; } };
+if (LANG === "fr") { mg(CONFIG, FR); document.documentElement.lang = "fr"; }
+
 const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const C = CONFIG, initials = C.name.split(" ").map(w => w[0]).join("");
@@ -563,8 +673,8 @@ $("theme").addEventListener("click", () => {
   try { localStorage.setItem("theme", n); } catch (e) {}
 });
 $("copy").addEventListener("click", async () => {
-  try { await navigator.clipboard.writeText(C.email); $("copy").textContent = "Copied"; } catch (e) { $("copy").textContent = C.email; }
-  setTimeout(() => $("copy").textContent = "Copy email", 2000);
+  try { await navigator.clipboard.writeText(C.email); $("copy").textContent = T("Copied"); } catch (e) { $("copy").textContent = C.email; }
+  setTimeout(() => $("copy").textContent = T("Copy email"), 2000);
 });
 
 /* Interactive terminal */
@@ -578,7 +688,7 @@ $("copy").addEventListener("click", async () => {
   const link = (u, t) => `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t || u)}</a>`;
   const item = e => `${key(e.title)}, ${esc(e.place)} <span class="dim">(${esc(e.when)})</span>\n  ${esc(e.text)}`;
   const cmds = {
-    help:       { d: "List available commands", run: () => Object.keys(cmds).map(n => key(n) + " ".repeat(12 - n.length) + esc(cmds[n].d)).join("\n") },
+    help:       { d: "List available commands", run: () => Object.keys(cmds).map(n => key(n) + " ".repeat(12 - n.length) + esc(T(cmds[n].d))).join("\n") },
     whoami:     { d: "General information", run: () => `${key(C.name)}\n${esc(C.tagline)}\n\n${esc(C.about[0])}` },
     experience: { d: "Experience and journey", run: () => C.journey.map(item).join("\n\n") },
     education:  { d: "Educational background", run: () => C.education.map(item).join("\n\n") },
@@ -599,7 +709,7 @@ $("copy").addEventListener("click", async () => {
     line(`<span class="ok">${esc($("tprompt").textContent)}</span> ${esc(v)}`);
     hist.push(v); hi = hist.length;
     const c = cmds[v.toLowerCase()];
-    if (!c) { line(`command not found: ${esc(v)}. Type ${key("help")} to see what I can do.`, "err"); return; }
+    if (!c) { line(LANG === "fr" ? `commande introuvable : ${esc(v)}. Tapez ${key("help")} pour voir ce que je sais faire.` : `command not found: ${esc(v)}. Type ${key("help")} to see what I can do.`, "err"); return; }
     const r = c.run(); if (r) line(r);
   }
   inp.addEventListener("keydown", e => {
@@ -613,8 +723,8 @@ $("copy").addEventListener("click", async () => {
   const qcGroup = hidden => `<div class="qc-group"${hidden ? ' aria-hidden="true"' : ""}>${qcNames.map(n => `<button type="button" class="qc-chip" data-c="${n}"${hidden ? ' tabindex="-1"' : ""}><span>$</span>${n}</button>`).join("")}</div>`;
   $("qc").innerHTML = `<div class="qc-track">${qcGroup(false)}${qcGroup(true)}</div>`;
   $("qc").addEventListener("click", e => { const b = e.target.closest("button"); if (b) run(b.dataset.c); });
-  line(`<span class="ok">Welcome to my interactive portfolio!</span>`);
-  line(`Type ${key("help")} to list available commands.\n`, "dim");
+  line(`<span class="ok">${esc(T("Welcome to my interactive portfolio!"))}</span>`);
+  line((LANG === "fr" ? `Tapez ${key("help")} pour lister les commandes disponibles.` : `Type ${key("help")} to list available commands.`) + "\n", "dim");
 })();
 
 /* Custom cursor (optional, visitor can switch it off) + 3D tilt on project cards */
@@ -816,7 +926,7 @@ const HERO_STILL = "data:image/webp;base64,UklGRhD9AABXRUJQVlA4WAoAAAAQAAAAfwIAH
   }
   /* say hi: letters hop on hover, rotating ring */
   const word = t => `<span class="w">${[...t].map(c => `<span class="jl">${c}</span>`).join("")}</span>`;
-  $("mega").innerHTML = `<span aria-hidden="true">${"No need to".split(" ").map(word).join(" ")}<br><span class="em">${"overthink it.".split(" ").map(word).join(" ")}</span></span>`;
+  $("mega").innerHTML = `<span aria-hidden="true">${T("No need to").split(" ").map(word).join(" ")}<br><span class="em">${T("overthink it.").split(" ").map(word).join(" ")}</span></span>`;
   $("ringlink").href = "mailto:" + C.email;
   /* footer download, project details */
   $("dlp").href = C.cv; $("dlp").setAttribute("download", C.cvName);
@@ -839,6 +949,55 @@ const HERO_STILL = "data:image/webp;base64,UklGRhD9AABXRUJQVlA4WAoAAAAQAAAAfwIAH
   cf.addEventListener("mouseenter", () => clearInterval(timer)); cf.addEventListener("mouseleave", play);
   let sx = null; cf.addEventListener("pointerdown", e => sx = e.clientX); addEventListener("pointerup", e => { if (sx !== null && Math.abs(e.clientX - sx) > 50) { go(cur + (e.clientX < sx ? 1 : -1)); play(); } sx = null; });
   layout(); play();
+})();
+
+/* ===== language switch, back to top, AI assistant ===== */
+(function () {
+  const fr = LANG === "fr", L = (en, f) => fr ? f : en;
+  $("ghMore").href = "https://github.com/" + C.github;
+  $("lang").querySelector(fr ? ".l-fr" : ".l-en").classList.add("on");
+  $("lang").onclick = () => { try { localStorage.setItem("lang", fr ? "en" : "fr"); } catch (e) {} location.reload(); };
+  const top = $("toTop"); top.onclick = () => scrollTo({ top: 0, behavior: "smooth" });
+  addEventListener("scroll", () => top.classList.toggle("show", scrollY > 700), { passive: true });
+  /* assistant */
+  const panel = $("aiPanel"), msgs = $("aiMsgs"), inp = $("aiIn"), hist = [];
+  $("aiLabel").textContent = L("Ask Ons AI", "Demander à Ons AI"); $("aiSend").textContent = L("Send", "Envoyer");
+  $("aiSub").textContent = L("Answers come from this portfolio.", "Les réponses viennent de ce portfolio.");
+  inp.placeholder = L("Ask about projects, labs, skills…", "Projets, labs, compétences…");
+  const fmt = t => esc(t).replace(/(https?:\/\/[^\s)]+)/g, u => `<a href="${u}" target="_blank" rel="noopener">${u}</a>`).replace(/\n/g, "<br>");
+  const say = (t, who) => { const d = document.createElement("div"); d.className = "m " + who; d.innerHTML = fmt(t); msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight; return d; };
+  const list = (a, f) => a.map(f).join("\n");
+  const KB = [
+    [/bonjour|salut|hello|^hi\b|hey|coucou/, () => L("Hi! I’m the assistant of this portfolio. Ask me about Ons’s projects, labs, skills, education or how to contact her.", "Bonjour ! Je suis l’assistant de ce portfolio. Posez-moi vos questions sur les projets, labs, compétences et études d’Ons, ou sur la façon de la contacter.")],
+    [/project|projet|built|construit|réalis|realis/, () => list(C.projects, p => `• ${p.title}: ${p.idea}`)],
+    [/lab|\btp\b|load|balanc|répartition|haute|availab|disponib|auto.?scal|multi/, () => list(C.labs, l => `• ${l.title}: ${l.text}`)],
+    [/skill|compétence|competence|stack|tech|outil|tool|terraform|docker|python|aws/, () => list(C.skills, k => `• ${k.title}: ${k.items.join(", ")}`)],
+    [/intern|stage|experience|expérience|siccad|cpn/, () => L("• IT intern at SicCad Engineering (Feb to May 2025): designed and developed an e-commerce mobile application with a web dashboard built with Laravel.\n• IT intern at CPN, M’Saken (Jan to Feb 2024): developed an e-learning platform with HTML, CSS, Bootstrap and MySQL.", "• Stage à SicCad Engineering (fév. à mai 2025) : conception et développement d’une application mobile e-commerce avec un tableau de bord web Laravel.\n• Stage au CPN, M’Saken (janv. à fév. 2024) : développement d’une plateforme e-learning avec HTML, CSS, Bootstrap et MySQL.")],
+    [/educat|étude|etude|diplôm|diplom|degree|licence|universit|school|tek|iset|graduat/, () => list(C.education, e => `• ${e.title}, ${e.place} (${e.when}): ${e.text}`)],
+    [/certif/, () => L("AWS Certified Cloud Practitioner and AWS Certified Solutions Architect – Associate are in progress. No certification has been obtained yet.", "AWS Certified Cloud Practitioner et AWS Certified Solutions Architect – Associate sont en préparation. Aucune certification n’est encore obtenue.")],
+    [/langu|french|english|arab|german|français|anglais|arabe|allemand/, () => L("Arabic (native), French (C1), English (B2), German (A1).", "Arabe (langue maternelle), français (C1), anglais (B2), allemand (A1).")],
+    [/\bcv\b|resume|résumé/, () => L("You can download her CV with the “Download CV” button at the top of the page.", "Vous pouvez télécharger son CV avec le bouton « Télécharger le CV » en haut de la page.")],
+    [/github|repo|code/, () => "https://github.com/" + C.github],
+    [/contact|mail|linkedin|reach|joindre|hire|recrut|available|disponible/, () => `Email: ${C.email}\nLinkedIn: ${C.linkedin}\nGitHub: https://github.com/${C.github}`]
+  ];
+  const local = q => { const s = q.toLowerCase(); for (const [re, f] of KB) if (re.test(s)) return f(); return L("I can answer questions about Ons’s projects, labs, skills, education, internships and how to contact her. Try one of the suggestions below.", "Je peux répondre aux questions sur les projets, labs, compétences, études et stages d’Ons, et sur la façon de la contacter. Essayez l’une des suggestions ci-dessous."); };
+  const ask = async q => {
+    q = q.trim().slice(0, 300); if (!q) return;
+    say(q, "me"); hist.push({ role: "user", content: q }); const t = say("…", "bot"); let r = null;
+    try { const c = new AbortController(); const to = setTimeout(() => c.abort(), 12000);
+      const res = await fetch("/api/chat", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ messages: hist.slice(-6), lang: LANG }), signal: c.signal });
+      clearTimeout(to); if (res.ok) r = (await res.json()).reply; } catch (e) {}
+    r = r || local(q); t.innerHTML = fmt(r); hist.push({ role: "assistant", content: r }); msgs.scrollTop = msgs.scrollHeight;
+  };
+  const open = on => { panel.hidden = !on; $("aiBtn").setAttribute("aria-expanded", String(on)); if (on) { if (!msgs.children.length) say(local("hello"), "bot"); inp.focus(); } };
+  $("aiBtn").onclick = () => open(panel.hidden); $("aiClose").onclick = () => open(false);
+  addEventListener("keydown", e => { if (e.key === "Escape" && !panel.hidden) open(false); });
+  $("aiForm").onsubmit = e => { e.preventDefault(); const v = inp.value; inp.value = ""; ask(v); };
+  $("aiSug").innerHTML = L([["Projects", "projects"], ["Labs", "labs"], ["Skills", "skills"], ["Internships", "internships"], ["Contact", "contact"]], [["Projets", "projets"], ["Labs", "labs"], ["Compétences", "compétences"], ["Stages", "stages"], ["Contact", "contact"]]).map(([a, b]) => `<button type="button" data-q="${b}">${a}</button>`).join("");
+  $("aiSug").onclick = e => { const b = e.target.closest("button"); if (b) ask(b.dataset.q); };
+  /* translate the static page text when French is selected */
+  if (fr) { const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), ns = []; while (w.nextNode()) ns.push(w.currentNode);
+    ns.forEach(n => { const t = n.nodeValue.trim(); if (FRMAP[t]) n.nodeValue = n.nodeValue.replace(t, FRMAP[t]); }); }
 })();
 
 const ld = document.createElement("script");
