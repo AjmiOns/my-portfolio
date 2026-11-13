@@ -26,7 +26,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script>
-try{var t=localStorage.getItem("theme")||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");document.documentElement.setAttribute("data-bs-theme",t)}catch(e){document.documentElement.setAttribute("data-bs-theme","light")}
+try{var t=localStorage.getItem("theme")||"light";document.documentElement.setAttribute("data-bs-theme",t)}catch(e){document.documentElement.setAttribute("data-bs-theme","light")}
 </script>
 <style>
 :root,[data-bs-theme=light]{
@@ -291,6 +291,20 @@ h2 em,.mega .em{font-family:"Instrument Serif",Georgia,serif;font-style:italic;f
 .ai-form{display:flex;gap:8px;padding:10px;border-top:1px solid var(--bs-border-color)}
 .ai-form input{flex:1;min-width:0;border:1px solid var(--bs-border-color);border-radius:999px;padding:8px 14px;background:var(--surface);color:var(--bs-body-color);outline:0}
 .ai-form button{border:0;border-radius:999px;padding:0 16px;background:rgb(var(--bs-link-color-rgb));color:#fff;font-weight:600}
+/* Nimbus: the cloud assistant, a floating orb that unfolds its label */
+.fab-ai{position:relative;display:flex;align-items:center;gap:0;padding:6px;border-radius:999px;border:1px solid rgba(255,255,255,.75);background:rgba(255,255,255,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 14px 36px rgba(30,60,90,.22);color:var(--bs-body-color);overflow:hidden}
+.nb-orb{position:relative;flex:none;width:50px;height:50px;border-radius:50%;display:grid;place-items:center;color:#fff;background:radial-gradient(circle at 30% 25%,#9FD2FF,#2F6FA3 60%,#1D4E78);animation:nbfloat 4.5s ease-in-out infinite}
+.nb-orb::before{content:"";position:absolute;inset:-4px;border-radius:50%;background:conic-gradient(#5B8FC7,#2B9A8F,#F0A58E,#5B8FC7);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 3px));mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 3px));animation:spin 6s linear infinite}
+.nb-orb svg{position:relative}
+.nb-orb i{position:absolute;top:-1px;right:0;font-style:normal;font-size:.8rem;color:#F2CE7A;animation:twinkle 2.4s ease-in-out infinite}
+.nb-txt{display:flex;flex-direction:column;align-items:flex-start;max-width:0;opacity:0;white-space:nowrap;overflow:hidden;text-align:left;transition:max-width .5s cubic-bezier(.3,.8,.3,1),opacity .35s,margin .4s}
+.fab-ai.intro .nb-txt,.fab-ai:hover .nb-txt,.fab-ai:focus-visible .nb-txt{max-width:240px;opacity:1;margin:0 18px 0 12px}
+.nb-txt b{font:700 .98rem "Bricolage Grotesque","DM Sans",sans-serif;letter-spacing:-.01em}
+.nb-txt small{font:500 .72rem "JetBrains Mono",ui-monospace,monospace;color:var(--bs-secondary-color);transition:opacity .3s}
+@keyframes nbfloat{50%{transform:translateY(-3px)}}
+@keyframes twinkle{50%{opacity:.25;transform:scale(.7) rotate(25deg)}}
+.nb-spark{color:#F2C14E;font-size:.9em}
+@media(prefers-reduced-motion:reduce){.fab-ai .nb-txt{max-width:240px;opacity:1;margin:0 18px 0 12px}}
 :focus-visible{outline:3px solid rgb(var(--bs-link-color-rgb))!important;outline-offset:3px}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 @media(max-width:767px){section{padding:56px 0}.portrait{width:200px;order:-1}}
@@ -449,10 +463,10 @@ h2 em,.mega .em{font-family:"Instrument Serif",Georgia,serif;font-style:italic;f
 
 <div class="fab-wrap">
   <button class="fab-top" id="toTop" type="button" aria-label="Back to top">↑</button>
-  <button class="fab-ai" id="aiBtn" type="button" aria-expanded="false" aria-controls="aiPanel"><span class="ai-ico" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V5M9.5 13h.01M14.5 13h.01M2 13v2M22 13v2"/></svg></span><span id="aiLabel">Ask Ons AI</span><i class="dot" aria-hidden="true"></i></button>
+  <button class="fab-ai" id="aiBtn" type="button" aria-expanded="false" aria-controls="aiPanel"><span class="nb-orb" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 18a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18 9.5a4 4 0 0 1-.5 8.5H7z"/><path d="M9.5 13.2h.01M14.5 13.2h.01M10.3 15.6c.9.7 2.5.7 3.4 0"/></svg><i>✦</i></span><span class="nb-txt"><b id="aiLabel">Ask Nimbus</b><small id="aiHint"></small></span></button>
 </div>
-<section class="ai-panel" id="aiPanel" aria-label="Ons AI" hidden>
-  <div class="ai-head"><div><div id="aiTitle">Ons AI</div><div class="ai-sub" id="aiSub"></div></div><button type="button" id="aiClose" class="ai-x" aria-label="Close">✕</button></div>
+<section class="ai-panel" id="aiPanel" aria-label="Nimbus" hidden>
+  <div class="ai-head"><div><div id="aiTitle">Nimbus <span class="nb-spark" aria-hidden="true">✦</span></div><div class="ai-sub" id="aiSub"></div></div><button type="button" id="aiClose" class="ai-x" aria-label="Close">✕</button></div>
   <div class="ai-msgs" id="aiMsgs" role="log" aria-live="polite"></div>
   <div class="ai-sug" id="aiSug"></div>
   <form class="ai-form" id="aiForm"><input id="aiIn" type="text" autocomplete="off" maxlength="300" aria-label="Your question"><button type="submit" id="aiSend">Send</button></form>
@@ -961,14 +975,14 @@ const HERO_STILL = "data:image/webp;base64,UklGRhD9AABXRUJQVlA4WAoAAAAQAAAAfwIAH
   addEventListener("scroll", () => top.classList.toggle("show", scrollY > 700), { passive: true });
   /* assistant */
   const panel = $("aiPanel"), msgs = $("aiMsgs"), inp = $("aiIn"), hist = [];
-  $("aiLabel").textContent = L("Ask Ons AI", "Demander à Ons AI"); $("aiSend").textContent = L("Send", "Envoyer");
-  $("aiSub").textContent = L("Answers come from this portfolio.", "Les réponses viennent de ce portfolio.");
+  $("aiLabel").textContent = L("Ask Nimbus", "Demandez à Nimbus"); $("aiBtn").setAttribute("aria-label", $("aiLabel").textContent); $("aiSend").textContent = L("Send", "Envoyer");
+  $("aiSub").textContent = L("Cloud assistant. Answers come from this portfolio.", "Assistant cloud. Réponses issues de ce portfolio.");
   inp.placeholder = L("Ask about projects, labs, skills…", "Projets, labs, compétences…");
   const fmt = t => esc(t).replace(/(https?:\/\/[^\s)]+)/g, u => `<a href="${u}" target="_blank" rel="noopener">${u}</a>`).replace(/\n/g, "<br>");
   const say = (t, who) => { const d = document.createElement("div"); d.className = "m " + who; d.innerHTML = fmt(t); msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight; return d; };
   const list = (a, f) => a.map(f).join("\n");
   const KB = [
-    [/bonjour|salut|hello|^hi\b|hey|coucou/, () => L("Hi! I’m the assistant of this portfolio. Ask me about Ons’s projects, labs, skills, education or how to contact her.", "Bonjour ! Je suis l’assistant de ce portfolio. Posez-moi vos questions sur les projets, labs, compétences et études d’Ons, ou sur la façon de la contacter.")],
+    [/bonjour|salut|hello|^hi\b|hey|coucou/, () => L("Hi, I’m Nimbus, Ons’s cloud assistant. Ask me about her projects, labs, skills, education or how to contact her.", "Bonjour, je suis Nimbus, l’assistant cloud d’Ons. Posez-moi vos questions sur ses projets, labs, compétences, études ou sur la façon de la contacter.")],
     [/project|projet|built|construit|réalis|realis/, () => list(C.projects, p => `• ${p.title}: ${p.idea}`)],
     [/lab|\btp\b|load|balanc|répartition|haute|availab|disponib|auto.?scal|multi/, () => list(C.labs, l => `• ${l.title}: ${l.text}`)],
     [/skill|compétence|competence|stack|tech|outil|tool|terraform|docker|python|aws/, () => list(C.skills, k => `• ${k.title}: ${k.items.join(", ")}`)],
@@ -989,6 +1003,12 @@ const HERO_STILL = "data:image/webp;base64,UklGRhD9AABXRUJQVlA4WAoAAAAQAAAAfwIAH
       clearTimeout(to); if (res.ok) r = (await res.json()).reply; } catch (e) {}
     r = r || local(q); t.innerHTML = fmt(r); hist.push({ role: "assistant", content: r }); msgs.scrollTop = msgs.scrollHeight;
   };
+  /* Nimbus orb: shows its label for a few seconds, then folds back; rotating hints */
+  const nb = $("aiBtn"), hints = L(["my AWS labs", "my projects", "my skills", "how to reach me"], ["mes labs AWS", "mes projets", "mes compétences", "comment me joindre"]); let hi = 0;
+  const setHint = () => { $("aiHint").textContent = L("Try: ", "Essayez : ") + hints[hi]; };
+  setHint(); nb.classList.add("intro");
+  if (!matchMedia("(prefers-reduced-motion:reduce)").matches) { setTimeout(() => nb.classList.remove("intro"), 7000); setInterval(() => { const h = $("aiHint"); h.style.opacity = 0; setTimeout(() => { hi = (hi + 1) % hints.length; setHint(); h.style.opacity = 1; }, 300); }, 2800); }
+  nb.addEventListener("click", () => nb.classList.remove("intro"));
   const open = on => { panel.hidden = !on; $("aiBtn").setAttribute("aria-expanded", String(on)); if (on) { if (!msgs.children.length) say(local("hello"), "bot"); inp.focus(); } };
   $("aiBtn").onclick = () => open(panel.hidden); $("aiClose").onclick = () => open(false);
   addEventListener("keydown", e => { if (e.key === "Escape" && !panel.hidden) open(false); });
