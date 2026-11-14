@@ -308,3 +308,19 @@ body:has(dialog[open]){overflow:hidden}
 .dlg-h,.dlg-f{flex:none}
 @media(max-width:575px){.dlg{width:calc(100vw - 20px);border-radius:18px}.dlg-b.pd-b{padding:14px 16px 18px}}
 .pd-b .chip{background:var(--p0);border:1px solid var(--bs-border-color);margin:0}
+
+/* share menu (footer) */
+.share{position:relative}
+.foot-links .share-btn{background:none;border:0;padding:0;font:inherit;font-size:.95rem;color:var(--bs-secondary-color);cursor:pointer}
+.foot-links .share-btn:hover,.foot-links .share-btn[aria-expanded=true]{color:rgb(var(--bs-link-color-rgb))}
+.share-menu{position:absolute;left:0;bottom:calc(100% + 12px);z-index:30;min-width:220px;padding:8px;background:var(--surface);border:1px solid var(--bs-border-color);border-radius:16px;box-shadow:0 14px 36px rgba(30,43,58,.16);animation:shin .16s ease-out}
+.share-menu[hidden]{display:none}
+@keyframes shin{from{opacity:0;transform:translateY(6px)}}
+.share-it{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;border:0;border-radius:10px;background:none;color:var(--bs-body-color);font:inherit;font-size:.95rem;text-align:left;text-decoration:none;cursor:pointer}
+.share-it[hidden]{display:none}
+.share-it svg{flex:none;color:var(--rose)}
+.share-it:hover,.share-it:focus-visible{background:var(--p0);color:var(--bs-body-color)}
+.foot-links .share-it,.foot-links .share-it:hover{color:var(--bs-body-color)}
+.share-st{min-height:0;padding:0 12px;font-size:.82rem;color:var(--bs-secondary-color)}
+.share-st:not(:empty){padding:6px 12px 4px}
+@media (prefers-reduced-motion:reduce){.share-menu{animation:none}}

@@ -46,6 +46,7 @@ A personal portfolio website built with plain **HTML, CSS and JavaScript** (Boot
 - ✅ **Interactive Terminal:** an "Ask my terminal" section to explore my profile
 - ✅ **Animated Hero:** portrait that reacts to the cursor, plus a custom cursor
 - ✅ **Downloadable CV:** one-click PDF download
+- ✅ **Share the portfolio:** footer menu to send the link by email, WhatsApp, Messenger or Instagram, or copy it
 - ✅ **Accessible:** skip link, keyboard navigation, ARIA labels, reduced-motion support
 - ✅ **SEO Ready:** meta description, Open Graph, structured data, `sitemap.xml` and `robots.txt`
 - ✅ **Free Hosting:** deployed on Vercel

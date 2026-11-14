@@ -368,7 +368,7 @@ const HERO_STILL = "data:image/webp;base64,UklGRhD9AABXRUJQVlA4WAoAAAAQAAAAfwIAH
   $("mega").innerHTML = `<span aria-hidden="true">${T("No need to").split(" ").map(word).join(" ")}<br><span class="em">${T("overthink it.").split(" ").map(word).join(" ")}</span></span>`;
   $("ringlink").href = "mailto:" + C.email;
   /* footer download, project details */
-  $("dlp").href = C.cv; $("dlp").setAttribute("download", C.cvName);
+  /* the footer now offers sharing; the CV link stays in the hero */
   /* toolbox coverflow */
   const cf = $("cf"), cards = [...$("skills").children], n = cards.length, dots = $("cfDots"); let cur = 0, timer;
   dots.innerHTML = cards.map((_, i) => `<button type="button" aria-label="Show ${i + 1} of ${n}"></button>`).join("");
@@ -399,6 +399,39 @@ const HERO_STILL = "data:image/webp;base64,UklGRhD9AABXRUJQVlA4WAoAAAAQAAAAfwIAH
   addEventListener("scroll", () => top.classList.toggle("show", scrollY > 700), { passive: true });
   /* translate the static page text when French is selected */
   translatePage();
+})();
+
+/* ===== share the portfolio: email, WhatsApp, Messenger, Instagram, copy link ===== */
+(function () {
+  const L = (en, f) => LANG === "fr" ? f : en;
+  const box = $("share"), btn = $("shareBtn"), menu = $("shareMenu"), st = $("shSt");
+  if (!box) return;
+  const URL_ = "https://ons-ajmi-portfolio.vercel.app/";
+  const msg = L("Ons Ajmi, cloud infrastructure engineering student: have a look at her portfolio", "Ons Ajmi, étudiante ingénieure en infrastructure cloud : découvrez son portfolio");
+  const enc = encodeURIComponent, mobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  $("shMail").href = "mailto:?subject=" + enc("Ons Ajmi | Portfolio") + "&body=" + enc(msg + "\n" + URL_);
+  $("shWa").href = "https://wa.me/?text=" + enc(msg + " " + URL_);
+  const say = t => { st.textContent = t; clearTimeout(say.t); say.t = setTimeout(() => st.textContent = "", 3500); };
+  const copy = async () => {
+    try { await navigator.clipboard.writeText(URL_); return true; } catch (e) {}
+    try { const a = document.createElement("textarea"); a.value = URL_; a.style.cssText = "position:fixed;opacity:0"; document.body.appendChild(a); a.select(); const ok = document.execCommand("copy"); a.remove(); return ok; } catch (e) { return false; }
+  };
+  const open = on => { menu.hidden = !on; btn.setAttribute("aria-expanded", on); if (!on) st.textContent = ""; };
+  btn.onclick = () => { open(menu.hidden); if (!menu.hidden) menu.querySelector(".share-it:not([hidden])").focus(); };
+  document.addEventListener("click", e => { if (!menu.hidden && !box.contains(e.target)) open(false); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !menu.hidden) { open(false); btn.focus(); } });
+  menu.addEventListener("click", e => { if (e.target.closest("a")) setTimeout(() => open(false), 100); });
+  if (navigator.share) { const n = $("shNative"); n.hidden = false; n.onclick = async () => { try { await navigator.share({ title: "Ons Ajmi | Portfolio", text: msg, url: URL_ }); open(false); } catch (e) {} }; }
+  $("shCopy").onclick = async () => say((await copy()) ? L("Link copied ✓", "Lien copié ✓") : URL_);
+  /* Messenger and Instagram have no public "share this link" web address: open the app and keep the link in the clipboard */
+  $("shMsg").onclick = async () => {
+    if (mobile) location.href = "fb-messenger://share/?link=" + enc(URL_); else window.open("https://www.messenger.com/", "_blank", "noopener");
+    say((await copy()) ? L("Link copied: paste it in Messenger", "Lien copié : collez-le dans Messenger") : URL_);
+  };
+  $("shIg").onclick = async () => {
+    window.open("https://www.instagram.com/direct/inbox/", "_blank", "noopener");
+    say((await copy()) ? L("Link copied: paste it in a message", "Lien copié : collez-le dans un message") : URL_);
+  };
 })();
 
 const ld = document.createElement("script");

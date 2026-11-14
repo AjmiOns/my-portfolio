@@ -51,7 +51,7 @@ const FRMAP = {
   "The idea": "L’idée", "What I did": "Ce que j’ai fait", "How it went": "Résultat",
   "Let’s connect": "Restons en contact", "Send an email": "Envoyer un e-mail", "Copy email": "Copier l’e-mail", "Copied": "Copié",
   "No need to": "Pas besoin de", "overthink it.": "trop réfléchir.",
-  "Download portfolio ↓": "Télécharger le portfolio ↓", "Back to top ↑": "Retour en haut ↑",
+  "Share portfolio ↗": "Partager le portfolio ↗", "Share portfolio": "Partager le portfolio", "More apps…": "Autres applications…", "Email": "E-mail", "Copy link": "Copier le lien", "Back to top ↑": "Retour en haut ↑",
   "Built with HTML, CSS and JavaScript · Hosted on Vercel · ©": "Conçu avec HTML, CSS et JavaScript · Hébergé sur Vercel · ©",
   "Welcome to my interactive portfolio!": "Bienvenue sur mon portfolio interactif !",
   "List available commands": "Lister les commandes disponibles", "General information": "Informations générales", "Experience and journey": "Expérience et parcours",
