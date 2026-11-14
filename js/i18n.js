@@ -62,8 +62,36 @@ const FRMAP = {
   "In preparation": "En préparation", "Earned": "Obtenue", "No certification obtained yet. In preparation:": "Aucune certification obtenue pour l’instant. En préparation :",
   "View architecture diagram": "Voir le diagramme d’architecture", "Architecture diagram": "Diagramme d’architecture", "Close": "Fermer",
   "Click the diagram to zoom": "Cliquez sur le diagramme pour zoomer",
-  "Key numbers": "Chiffres clés"
+  "Key numbers": "Chiffres clés",
+  "Hover or tap to flip ↻": "Survolez ou touchez pour retourner ↻",
+  /* accessible names and tooltips */
+  "Main": "Principal", "Ons Ajmi, back to top": "Ons Ajmi, retour en haut", "Open menu": "Ouvrir le menu",
+  "Custom cursor": "Curseur personnalisé", "Custom cursor: on": "Curseur personnalisé : activé", "Custom cursor: off": "Curseur personnalisé : désactivé",
+  "Portrait of Ons Ajmi": "Portrait d’Ons Ajmi", "Scroll down": "Défiler vers le bas",
+  "ID card of Ons Ajmi. Press to flip it.": "Carte d’identité d’Ons Ajmi. Appuyez pour la retourner.",
+  "Skills by area": "Compétences par domaine", "Previous": "Précédent", "Next": "Suivant",
+  "Terminal output": "Sortie du terminal", "Type a command": "Saisir une commande", "Quick commands": "Commandes rapides",
+  "Filter by technology": "Filtrer par technologie", "No need to overthink it.": "Pas besoin de trop réfléchir.",
+  "Say hello by email": "Dire bonjour par e-mail", "Back to top": "Retour en haut", "Your question": "Votre question"
 };
+/* Patterns for strings that contain a variable part (n of m, project names...) */
+const FRPAT = [[/^Show (\d+) of (\d+)$/, "Afficher $1 sur $2"], [/^Screenshot of (.+)$/, "Capture d’écran de $1"]];
 const T = s => (LANG === "fr" && FRMAP[s]) || s;
+/* French pass over the static page: text nodes and accessible attributes (aria-label, title, placeholder, alt).
+   `node tools/check-i18n.js` lists whatever is still in English on the French page. */
+const FRATTR = ["aria-label", "title", "placeholder", "alt"];
+const trFr = s => {
+  const t = s.trim(); if (!t) return s;
+  let v = FRMAP[t];
+  if (!v) for (const [re, r] of FRPAT) if (re.test(t)) { v = t.replace(re, r); break; }
+  return v ? s.replace(t, () => v) : s;
+};
+const translatePage = (root = document.body) => {
+  if (LANG !== "fr") return;
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT), ns = [];
+  while (w.nextNode()) { const n = w.currentNode; if (!/^(SCRIPT|STYLE|NOSCRIPT)$/.test(n.parentNode.nodeName)) ns.push(n); }
+  ns.forEach(n => { n.nodeValue = trFr(n.nodeValue); });
+  root.querySelectorAll("[aria-label],[title],[placeholder],[alt]").forEach(el => FRATTR.forEach(a => { const v = el.getAttribute(a); if (v) el.setAttribute(a, trFr(v)); }));
+};
 const mg = (a, b) => { for (const k in b) { const v = b[k]; if (Array.isArray(v)) { if (v.length && v[0] && typeof v[0] === "object" && !Array.isArray(v[0])) v.forEach((o, i) => mg(a[k][i], o)); else a[k] = v; } else if (v && typeof v === "object") mg(a[k], v); else a[k] = v; } };
 if (LANG === "fr") { mg(CONFIG, FR); document.documentElement.lang = "fr"; }

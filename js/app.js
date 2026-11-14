@@ -184,7 +184,7 @@ $("copy").addEventListener("click", async () => {
     root.classList.toggle("has-cursor", v);
     if (!v) root.classList.remove("cur-on");
     btn.setAttribute("aria-pressed", String(v));
-    btn.title = "Custom cursor: " + (v ? "on" : "off");
+    btn.title = T("Custom cursor: " + (v ? "on" : "off"));
     if (save) { try { localStorage.setItem("cursor", v ? "on" : "off"); } catch (e) {} }
   }
   btn.classList.remove("d-none");
@@ -296,7 +296,7 @@ const HERO_STILL = "data:image/webp;base64,UklGRhD9AABXRUJQVlA4WAoAAAAQAAAAfwIAH
 
   function useStill() {
     const im = new Image();
-    im.alt = "Portrait of " + C.name; im.decoding = "async";
+    im.alt = T("Portrait of " + C.name); im.decoding = "async";
     im.onload = () => {
       face.textContent = ""; face.appendChild(im);
       render = () => { im.style.transform = `perspective(700px) rotateY(${(sx * 9).toFixed(2)}deg) rotateX(${(-sy * 6).toFixed(2)}deg) scale(1)`; };
@@ -398,8 +398,7 @@ const HERO_STILL = "data:image/webp;base64,UklGRhD9AABXRUJQVlA4WAoAAAAQAAAAfwIAH
   const top = $("toTop"); top.onclick = () => scrollTo({ top: 0, behavior: "smooth" });
   addEventListener("scroll", () => top.classList.toggle("show", scrollY > 700), { passive: true });
   /* translate the static page text when French is selected */
-  if (fr) { const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT), ns = []; while (w.nextNode()) ns.push(w.currentNode);
-    ns.forEach(n => { const t = n.nodeValue.trim(); if (FRMAP[t]) n.nodeValue = n.nodeValue.replace(t, FRMAP[t]); }); }
+  translatePage();
 })();
 
 const ld = document.createElement("script");
