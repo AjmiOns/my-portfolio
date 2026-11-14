@@ -19,12 +19,11 @@ function draw() {
   const list = C.projects.filter(p => active === "All" || p.tags.includes(active));
   $("grid").innerHTML = list.map((p, i) => {
     const img = `<div class="shot-wrap" aria-hidden="${p.image ? "false" : "true"}">${esc(p.title.trim().slice(0, 1))}${p.image ? `<img src="${esc(p.image)}" alt="Screenshot of ${esc(p.title)}" loading="lazy" onerror="this.remove()">` : ""}</div>`;
+    const shown = p.tags.slice(0, 3), extra = p.tags.length - shown.length;
     return `<div class="col-md-6 col-lg-4"><article class="work-card card h-100 rounded-4 p-4 p${i % 5}">${img}
-      <h3 class="h4 mt-3 mb-2">${esc(p.title)}</h3><div class="mb-3">${p.tags.map(t => `<span class="chip">${esc(t)}</span>`).join("")}</div>
-      ${p.stats ? `<ul class="stats" aria-label="${esc(T("Key numbers"))}">${p.stats.map(([n, l]) => `<li><b>${esc(n)}</b><span>${esc(l)}</span></li>`).join("")}</ul>` : ""}
-      <dl class="mb-3"><dt>The idea</dt><dd>${esc(p.idea)}</dd><dt>What I did</dt><dd>${esc(p.did)}</dd>${p.outcome ? `<dt>How it went</dt><dd>${esc(p.outcome)}</dd>` : ""}</dl>
-      ${p.diagram ? `<p class="mb-3"><button type="button" class="linklike" data-diagram="${esc(p.title)}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>${esc(T("View architecture diagram"))}</button></p>` : ""}
-      ${(p.features || p.contribution) ? `<button class="more-btn" type="button" aria-expanded="false">Details <i>+</i></button><div class="more"><div>${p.features ? `<h4>Key features</h4><ul>${p.features.map(f => `<li>${esc(f)}</li>`).join("")}</ul>` : ""}${p.contribution ? `<h4>My contribution</h4><p>${esc(p.contribution)}</p>` : ""}</div></div>` : ""}<div class="d-flex gap-3 fw-bold mt-auto">${p.repo ? `<a href="${esc(p.repo)}" target="_blank" rel="noopener">Source code</a>` : ""}${p.demo ? `<a href="${esc(p.demo)}" target="_blank" rel="noopener">Live demo</a>` : ""}</div>
+      <h3 class="h4 mt-3 mb-2">${esc(p.title)}</h3><div class="wc-tags">${shown.map(t => `<span class="chip">${esc(t)}</span>`).join("")}${extra > 0 ? `<span class="chip chip-more" title="${esc(p.tags.slice(3).join(", "))}">+${extra}</span>` : ""}</div>
+      <dl class="wc-dl"><dt>${esc(T("The idea"))}</dt><dd class="clamp c3">${esc(p.idea)}</dd><dt>${esc(T("What I did"))}</dt><dd class="clamp c4">${esc(p.did)}</dd></dl>
+      <div class="wc-foot mt-auto"><button class="more-btn" type="button" data-detail="${esc(p.title)}" aria-haspopup="dialog">${esc(T("Details"))} <i>+</i></button>${p.repo ? `<a href="${esc(p.repo)}" target="_blank" rel="noopener">${esc(T("Source code"))}</a>` : ""}${p.demo ? `<a href="${esc(p.demo)}" target="_blank" rel="noopener">${esc(T("Live demo"))}</a>` : ""}</div>
     </article></div>`;
   }).join("");
   $("filters").innerHTML = tags.length < 2 ? "" : ["All", ...tags].map(t => `<button type="button" class="btn${t === active ? " on" : ""}" aria-pressed="${t === active}" data-t="${esc(t)}">${esc(t)}</button>`).join("");
@@ -37,7 +36,7 @@ draw();
   const dlg = $("diagramDlg"), body = $("dlgBody"), img = $("dlgImg");
   if (!dlg || !dlg.showModal) return;
   const hint = z => $("dlgHint").textContent = z ? "" : T("Click the diagram to zoom");
-  $("grid").addEventListener("click", e => {
+  document.addEventListener("click", e => {
     const b = e.target.closest("[data-diagram]"); if (!b) return;
     const p = C.projects.find(x => x.title === b.dataset.diagram); if (!p || !p.diagram) return;
     $("dlgTitle").textContent = T("Architecture diagram") + " · " + p.title;
@@ -47,6 +46,27 @@ draw();
   });
   img.addEventListener("click", () => { const z = body.classList.toggle("zoom"); hint(z); });
   $("dlgClose").addEventListener("click", () => dlg.close());
+  dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+})();
+
+/* project details: native <dialog>, so every card keeps the same compact size */
+(() => {
+  const dlg = $("projDlg"); if (!dlg || !dlg.showModal) return;
+  const dia = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>';
+  const html = p => `<div class="pd-tags">${p.tags.map(t => `<span class="chip">${esc(t)}</span>`).join("")}</div>
+    ${p.stats ? `<ul class="stats" aria-label="${esc(T("Key numbers"))}">${p.stats.map(([n, l]) => `<li><b>${esc(n)}</b><span>${esc(l)}</span></li>`).join("")}</ul>` : ""}
+    <dl><dt>${esc(T("The idea"))}</dt><dd>${esc(p.idea)}</dd><dt>${esc(T("What I did"))}</dt><dd>${esc(p.did)}</dd>${p.outcome ? `<dt>${esc(T("How it went"))}</dt><dd>${esc(p.outcome)}</dd>` : ""}</dl>
+    ${p.features ? `<h4>${esc(T("Key features"))}</h4><ul>${p.features.map(f => `<li>${esc(f)}</li>`).join("")}</ul>` : ""}
+    ${p.contribution ? `<h4>${esc(T("My contribution"))}</h4><p>${esc(p.contribution)}</p>` : ""}
+    ${p.diagram ? `<p class="mt-3 mb-0"><button type="button" class="linklike" data-diagram="${esc(p.title)}">${dia}${esc(T("View architecture diagram"))}</button></p>` : ""}
+    ${(p.repo || p.demo) ? `<div class="pd-links">${p.repo ? `<a href="${esc(p.repo)}" target="_blank" rel="noopener">${esc(T("Source code"))}</a>` : ""}${p.demo ? `<a href="${esc(p.demo)}" target="_blank" rel="noopener">${esc(T("Live demo"))}</a>` : ""}</div>` : ""}`;
+  $("grid").addEventListener("click", e => {
+    const b = e.target.closest("[data-detail]"); if (!b) return;
+    const p = C.projects.find(x => x.title === b.dataset.detail); if (!p) return;
+    $("pdTitle").textContent = p.title; $("pdBody").innerHTML = html(p); $("pdBody").scrollTop = 0;
+    $("pdClose").setAttribute("aria-label", T("Close")); dlg.showModal();
+  });
+  $("pdClose").addEventListener("click", () => dlg.close());
   dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
 })();
 
@@ -349,7 +369,6 @@ const HERO_STILL = "data:image/webp;base64,UklGRhD9AABXRUJQVlA4WAoAAAAQAAAAfwIAH
   $("ringlink").href = "mailto:" + C.email;
   /* footer download, project details */
   $("dlp").href = C.cv; $("dlp").setAttribute("download", C.cvName);
-  $("grid").addEventListener("click", e => { const b = e.target.closest(".more-btn"); if (!b) return; const on = b.closest(".work-card").classList.toggle("open"); b.setAttribute("aria-expanded", String(on)); });
   /* toolbox coverflow */
   const cf = $("cf"), cards = [...$("skills").children], n = cards.length, dots = $("cfDots"); let cur = 0, timer;
   dots.innerHTML = cards.map((_, i) => `<button type="button" aria-label="Show ${i + 1} of ${n}"></button>`).join("");

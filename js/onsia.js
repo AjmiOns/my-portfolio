@@ -114,16 +114,29 @@
   const isOpen = () => panel.classList.contains("open");
   const askClear = on => cf.classList.toggle("show", on);
   const syncMin = () => { const m = panel.classList.contains("min"), t = m ? L("Expand", "Agrandir") : L("Minimize", "Réduire"); $("aiMin").setAttribute("aria-label", t); $("aiMin").title = t; $("aiMin").setAttribute("aria-expanded", String(!m)); };
+  /* phones: never pop the keyboard open on its own; pin the sheet to the visible area so the keyboard never covers it */
+  const coarse = matchMedia("(pointer:coarse)"), phone = matchMedia("(max-width:575px)"), vv = window.visualViewport, root = document.documentElement;
+  const focusIn = () => { if (!coarse.matches) inp.focus(); };
+  const lock = () => root.classList.toggle("ai-full", phone.matches && isOpen() && !panel.classList.contains("min"));
+  const fit = () => {
+    if (!phone.matches || !isOpen()) { panel.style.removeProperty("--vvh"); panel.style.removeProperty("--vvb"); panel.classList.remove("kb"); return; }
+    const h = vv ? vv.height : innerHeight, off = vv ? vv.offsetTop : 0, bottom = Math.max(0, innerHeight - h - off);
+    panel.style.setProperty("--vvh", Math.round(h - 10) + "px"); panel.style.setProperty("--vvb", Math.round(bottom) + "px");
+    const kb = innerHeight - h > 120; if (kb !== panel.classList.contains("kb")) { panel.classList.toggle("kb", kb); } if (kb) toEnd();
+  };
+  if (vv) { vv.addEventListener("resize", fit); vv.addEventListener("scroll", fit); }
+  addEventListener("resize", fit); addEventListener("orientationchange", () => setTimeout(fit, 250));
+  inp.addEventListener("focus", () => { if (phone.matches) { setTimeout(fit, 60); setTimeout(() => { fit(); window.scrollTo(0, 0); toEnd(); }, 350); } });
   const open = on => {
     panel.classList.toggle("open", on); panel.inert = !on; panel.setAttribute("aria-hidden", String(!on)); nb.setAttribute("aria-expanded", String(on)); nb.classList.toggle("is-open", on);
-    if (on) { nb.classList.remove("intro"); panel.classList.remove("min"); syncMin(); setTimeout(() => { inp.focus(); toEnd(); carSync(); }, 160); } else askClear(false);
+    if (on) { nb.classList.remove("intro"); panel.classList.remove("min"); syncMin(); fit(); lock(); setTimeout(() => { focusIn(); toEnd(); carSync(); }, 160); } else { askClear(false); lock(); fit(); }
   };
   const wipe = () => { gen++; msgs.classList.add("fade");
     setTimeout(() => { msgs.querySelectorAll(".m,.ai-time").forEach(n => n.remove()); log.length = 0; hist.length = 0; lastTs = 0; try { sessionStorage.removeItem(KEY); } catch (e) {}
-      setBusy(false); setFoot(true); sync(); askClear(false); msgs.classList.remove("fade"); msgs.scrollTop = 0; inp.focus(); }, 260); };
+      setBusy(false); setFoot(true); sync(); askClear(false); msgs.classList.remove("fade"); msgs.scrollTop = 0; focusIn(); }, 260); };
   nb.onclick = () => open(!isOpen());
   $("aiClose").onclick = () => { open(false); nb.focus(); };
-  $("aiMin").onclick = () => { panel.classList.toggle("min"); askClear(false); syncMin(); if (!panel.classList.contains("min")) { toEnd(); inp.focus(); } };
+  $("aiMin").onclick = () => { panel.classList.toggle("min"); askClear(false); syncMin(); lock(); if (!panel.classList.contains("min")) { toEnd(); focusIn(); } };
   $("aiClear").onclick = () => { if (log.length) askClear(!cf.classList.contains("show")); };
   $("aiNo").onclick = () => askClear(false); $("aiYes").onclick = wipe;
   addEventListener("keydown", e => { if (e.key === "Escape" && isOpen()) { if (cf.classList.contains("show")) askClear(false); else { open(false); nb.focus(); } } });

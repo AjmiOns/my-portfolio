@@ -104,4 +104,24 @@
 .ai-field button:disabled{background:var(--c-soft);color:var(--c-muted);box-shadow:none;cursor:not-allowed}
 .ai-foot{flex:none;display:flex;justify-content:center;align-items:center;gap:6px;padding:2px 14px 10px;text-align:center;font:500 .64rem "JetBrains Mono",ui-monospace,monospace;letter-spacing:.04em;color:var(--c-muted)}
 .ai-foot.warn{color:var(--c-warn)}
-@media(max-width:575px){.ai-panel{right:10px;left:10px;width:auto;height:min(640px,calc(100vh - 170px));height:min(640px,calc(100dvh - 170px))}.nb-tip{display:none}}
+.ai-panel button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+@media(max-width:575px){
+  .nb-tip{display:none}
+  .ai-panel{left:0;right:0;width:auto;bottom:var(--vvb,0px);height:calc(100dvh - 10px);height:var(--vvh,calc(100dvh - 10px));max-height:none;border-radius:22px 22px 0 0;border-bottom:0;transform-origin:50% 100%;z-index:3100;padding-bottom:0}
+  .ai-panel.min{height:auto}
+  .ai-head{padding-top:max(13px,env(safe-area-inset-top))}
+  .ai-foot{padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+  .ai-form{padding:2px 10px 6px}
+  .ai-panel.kb .ai-foot,.ai-panel.kb .ai-car{display:none}
+  .ai-panel.kb .ai-form{padding-bottom:max(8px,env(safe-area-inset-bottom))}
+  html.ai-full,html.ai-full body{overflow:hidden;overscroll-behavior:none}
+  html.ai-full .fab-ai,html.ai-full .fab-top{opacity:0;visibility:hidden;pointer-events:none}
+}
+/* 16px minimum on touch screens: below that, iOS zooms the whole page when the field is focused */
+@media(max-width:575px),(pointer:coarse){
+  .ai-field textarea{font-size:16px;line-height:1.4;height:42px;padding:10px 6px 10px 14px}
+  .ai-field button{width:42px;height:42px}
+  .ai-confirm button{padding:6px 14px}
+}
+
+.ai-panel,.ai-panel *{box-sizing:border-box}
