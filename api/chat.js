@@ -14,10 +14,44 @@ Languages: Arabic (native), French (C1), English (B2), German (A1).
 Contact: ajmions241@gmail.com, https://www.linkedin.com/in/ons-ajmi--/, https://github.com/AjmiOns, portfolio https://ons-ajmi-portfolio.vercel.app/
 `;
 
+/* ---- abuse protection (no visible change for normal visitors) ---- */
+const MAX_BODY = 8000;                 // characters, whole request
+const LIMIT = 15, WINDOW = 10 * 60e3;  // 15 questions per IP every 10 minutes
+const DAILY = 1500;                    // global cap per server instance and day (safety net for the API credit)
+const hits = new Map();                // ip -> [timestamps]; in memory, best effort per serverless instance
+let day = { d: "", n: 0 };
+
+// Only calls coming from this site (or Vercel previews / local dev) are accepted.
+const originOk = (req) => {
+  const o = req.headers.origin || req.headers.referer || "";
+  if (!o) return false;
+  let h; try { h = new URL(o).hostname; } catch (e) { return false; }
+  return h === "ons-ajmi-portfolio.vercel.app" || h === "localhost" || h === "127.0.0.1" ||
+    (h.endsWith(".vercel.app") && h.startsWith("ons-ajmi-portfolio"));
+};
+const limited = (ip) => {
+  const now = Date.now();
+  const list = (hits.get(ip) || []).filter((t) => now - t < WINDOW);
+  list.push(now); hits.set(ip, list);
+  if (hits.size > 5000) for (const [k, v] of hits) if (!v.some((t) => now - t < WINDOW)) hits.delete(k);
+  const today = new Date().toISOString().slice(0, 10);
+  if (day.d !== today) day = { d: today, n: 0 };
+  day.n++;
+  return list.length > LIMIT || day.n > DAILY;
+};
+
 module.exports = async (req, res) => {
+  res.setHeader("Cache-Control", "no-store");
+  res.setHeader("X-Content-Type-Options", "nosniff");
   if (req.method !== "POST") return res.status(405).json({ error: "POST only" });
+  if (!originOk(req)) return res.status(403).json({ error: "forbidden" });
+  const ct = String(req.headers["content-type"] || "");
+  if (!ct.includes("application/json")) return res.status(415).json({ error: "json only" });
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key) return res.status(503).json({ error: "assistant not configured" });
+  if (JSON.stringify(req.body || "").length > MAX_BODY) return res.status(413).json({ error: "too large" });
+  const ip = String(req.headers["x-forwarded-for"] || req.socket?.remoteAddress || "?").split(",")[0].trim();
+  if (limited(ip)) { res.setHeader("Retry-After", "600"); return res.status(429).json({ error: "too many requests" }); }
 
   let body = req.body;
   if (typeof body === "string") { try { body = JSON.parse(body); } catch (e) { body = {}; } }
@@ -38,6 +72,7 @@ module.exports = async (req, res) => {
   try {
     const r = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
+      signal: AbortSignal.timeout(10000),
       headers: { "content-type": "application/json", "x-api-key": key, "anthropic-version": "2023-06-01" },
       body: JSON.stringify({ model: "claude-haiku-5-5", max_tokens: 350, system, messages }),
     });
