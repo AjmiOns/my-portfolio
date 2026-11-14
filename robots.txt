@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ons-ajmi-portfolio.vercel.app/sitemap.xml
